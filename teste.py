@@ -31,12 +31,14 @@ rekognition_client = boto3.client('rekognition',
 @app.route('/photo', methods=['POST'])
 def face_comparison():
     try:
-        file = request.files['file']
+        file = request.files.get('file')
+        type(file)
+        print(file)
         file_data = file.read()
 
         user_id = request.args.get('userId')
 
-        s3_object_key = f'{user_id}.png'
+        s3_object_key = f'{user_id}.jpg'
 
         response = s3_client.get_object(
             Bucket=BUCKET, Key='public/' + s3_object_key)

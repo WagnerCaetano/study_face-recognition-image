@@ -9,17 +9,35 @@
         padding: 20px;
       }
 
+      img {
+        width: 30%;
+        height: 30%;
+      }
+
       h1 {
         margin-top: 0;
       }
 
       .container {
-        max-width: 500px;
+        max-width: 800px;
         margin: 0 auto;
       }
 
+      .form-group-button {
+        display: flex;
+        flex-direction: column;
+        gap: 10;
+      }
+
+      .form-group-button div {
+        display: flex;
+        flex-direction: column;
+        gap: 10;
+      }
+
       .form-group {
-        margin-bottom: 20px;
+        width: 100%;
+        margin-bottom: 10px;
       }
 
       .form-group label {
@@ -39,6 +57,7 @@
         border: none;
         border-radius: 4px;
         cursor: pointer;
+        width: 30%;
       }
 
       .result {
@@ -56,7 +75,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Face Comparison</h1>
+      <h1>ClassCheck Face Comparison</h1>
       <div class="form-group">
         <label for="file">Select an image:</label>
         <input type="file" id="file" />
@@ -65,8 +84,20 @@
         <label for="userId">User Id:</label>
         <input type="text" id="userId" />
       </div>
-      <div class="form-group">
+      <div class="form-group form-group-button">
         <button onclick="uploadImage()">Upload</button>
+        <br />
+        <div>
+          <div class="form-group">
+            <p>Imagem do database:</p>
+            <img id="database" alt="" />
+          </div>
+          <div class="form-group">
+            <p>Imagem enviada:</p>
+            <br />
+            <img id="enviada" alt="" />
+          </div>
+        </div>
       </div>
       <div class="result">
         <h2>Result:</h2>
@@ -92,8 +123,17 @@
           return;
         }
 
-        //const apiUrl = "http://127.0.0.1:5000/photo";
-        const apiUrl = "https://x900d4vto4.execute-api.sa-east-1.amazonaws.com/staging/photo";
+        const imageDb = document.getElementById("database");
+        imageDb.setAttribute(
+          "src",
+          "https://photos173431-staging.s3.sa-east-1.amazonaws.com/public/" + userId + ".jpg"
+        );
+
+        const imageEnviada = document.getElementById("enviada");
+        imageEnviada.setAttribute("src", URL.createObjectURL(file));
+
+        const apiUrl = "http://127.0.0.1:5000/photo";
+        // apiUrl = "https://x900d4vto4.execute-api.sa-east-1.amazonaws.com/staging/photo";
         const formData = new FormData();
         formData.append("file", file);
 
