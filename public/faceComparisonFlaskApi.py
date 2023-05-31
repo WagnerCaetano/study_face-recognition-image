@@ -28,7 +28,7 @@ rekognition_client = boto3.client('rekognition',
                                   config=Config(region_name=REKOGNITION_REGION))
 
 
-@app.route('/photo', methods=['POST'])
+@app.route('/photos', methods=['POST'])
 def face_comparison():
     try:
         file = request.files.get('file')

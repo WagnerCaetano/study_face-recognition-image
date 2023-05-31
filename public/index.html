@@ -132,8 +132,8 @@
         const imageEnviada = document.getElementById("enviada");
         imageEnviada.setAttribute("src", URL.createObjectURL(file));
 
-        //const apiUrl = "http://127.0.0.1:5000/photo";
-        const apiUrl = "https://x900d4vto4.execute-api.sa-east-1.amazonaws.com/staging/photo";
+        //const apiUrl = "http://127.0.0.1:5000/photos";
+        const apiUrl = "https://x900d4vto4.execute-api.sa-east-1.amazonaws.com/staging/photos";
         const formData = new FormData();
         formData.append("file", file);
 
