@@ -2,13 +2,13 @@ import os
 import boto3
 from botocore.config import Config
 from flask_cors import CORS
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 
 from dotenv import load_dotenv
 
 load_dotenv()
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='./')
 CORS(app)
 
 AWS_ACCESS_KEY_ID = os.getenv('AWS_ACCESS_KEY_ID')
@@ -26,6 +26,11 @@ rekognition_client = boto3.client('rekognition',
                                   aws_secret_access_key=AWS_SECRET_ACCESS_KEY,
                                   region_name=REKOGNITION_REGION,
                                   config=Config(region_name=REKOGNITION_REGION))
+
+
+@app.route('/')
+def home():
+    return render_template('index.html')
 
 
 @app.route('/photos', methods=['POST'])

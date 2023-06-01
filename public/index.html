@@ -132,16 +132,17 @@
         const imageEnviada = document.getElementById("enviada");
         imageEnviada.setAttribute("src", URL.createObjectURL(file));
 
-        //const apiUrl = "http://127.0.0.1:5000/photos";
-        const apiUrl = "https://x900d4vto4.execute-api.sa-east-1.amazonaws.com/staging/photos";
-        const formData = new FormData();
-        formData.append("file", file);
+        const apiUrl = "http://127.0.0.1:5000/photos";
 
-        const requestUrl = `${apiUrl}?userId=${encodeURIComponent(userId)}`;
+        const encodedImage = getBase64EncodedImage(file);
+        const body = JSON.stringify({ image: encodedImage, userId });
 
-        fetch(requestUrl, {
+        fetch(apiUrl, {
           method: "POST",
-          body: formData,
+          headers: {
+            "Content-Type": "image/jpeg;image/png",
+          },
+          body,
         })
           .then((response) => response.json())
           .then((data) => {
@@ -156,6 +157,18 @@
             console.error("Error:", error);
             document.getElementById("result-text").textContent = "An error occurred.";
           });
+      }
+
+      function getBase64EncodedImage(file) {
+        return new Promise((resolve, reject) => {
+          const reader = new FileReader();
+          reader.readAsDataURL(file);
+          reader.onloadend = () => {
+            const base64Data = reader.result.split(",")[1];
+            resolve(base64Data);
+          };
+          reader.onerror = (error) => reject(error);
+        });
       }
     </script>
   </body>
