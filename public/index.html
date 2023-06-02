@@ -112,7 +112,7 @@
         const imageEnviada = document.getElementById("enviada");
         imageEnviada.setAttribute("src", URL.createObjectURL(file));
 
-        const apiUrl = "http://ec2-18-228-199-45.sa-east-1.compute.amazonaws.com:5000/photos";
+        const apiUrl = "https://b6umubuqa0.execute-api.sa-east-1.amazonaws.com/prod/photos";
         const formData = new FormData();
         formData.append("file", file);
 
@@ -138,9 +138,6 @@
       }
 
       document.addEventListener("DOMContentLoaded", function () {
-        if (window.location.href.indexOf("18-228-199-45") <= 0) {
-          window.location.href = "http://ec2-18-228-199-45.sa-east-1.compute.amazonaws.com:5000";
-        }
         userIdInput = document.getElementById("userId");
         initializeCamera();
       });
