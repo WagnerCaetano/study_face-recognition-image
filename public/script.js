@@ -127,6 +127,9 @@ function uploadImage() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
+  if (window.location !== "http://ec2-18-228-199-45.sa-east-1.compute.amazonaws.com:5000") {
+    window.location.href = "http://ec2-18-228-199-45.sa-east-1.compute.amazonaws.com:5000";
+  }
   userIdInput = document.getElementById("userId");
   initializeCamera();
 });
