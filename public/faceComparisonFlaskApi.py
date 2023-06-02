@@ -37,8 +37,6 @@ def home():
 def face_comparison():
     try:
         file = request.files.get('file')
-        type(file)
-        print(file)
         file_data = file.read()
 
         user_id = request.args.get('userId')
