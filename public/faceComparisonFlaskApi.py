@@ -37,8 +37,6 @@ def home():
 def face_comparison():
     try:
         file = request.files.get('file')
-        print(file)
-        print(type(file))
         file_data = file.read()
 
         user_id = request.args.get('userId')
@@ -47,6 +45,8 @@ def face_comparison():
 
         response = s3_client.get_object(
             Bucket=BUCKET, Key='public/' + s3_object_key)
+        print(response)
+        print(type(response))
         target_image_data = response['Body'].read()
         print(type(file_data))
         print(type(target_image_data))
