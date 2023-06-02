@@ -38,6 +38,8 @@ def face_comparison():
     try:
         file = request.files.get('file')
         file_data = file.read()
+        print(file)
+        print(type(file))
 
         user_id = request.args.get('userId')
 
