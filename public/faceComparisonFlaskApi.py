@@ -40,16 +40,10 @@ def face_comparison():
         file_data = file.read()
 
         user_id = request.args.get('userId')
-
         s3_object_key = f'{user_id}.jpg'
-
         response = s3_client.get_object(
             Bucket=BUCKET, Key='public/' + s3_object_key)
-        print(response)
-        print(type(response))
         target_image_data = response['Body'].read()
-        print(type(file_data))
-        print(type(target_image_data))
 
         response = rekognition_client.compare_faces(SimilarityThreshold=80,
                                                     SourceImage={
