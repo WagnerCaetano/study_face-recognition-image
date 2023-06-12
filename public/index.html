@@ -48,26 +48,14 @@
       }
 
       function sendImage(file) {
-        if (!userIdInput.value.trim()) {
-          alert("Please enter a user ID.");
-          return;
-        }
-
-        const userId = userIdInput.value.trim();
-        const imageDb = document.getElementById("database");
-        imageDb.setAttribute(
-          "src",
-          "https://photos173431-staging.s3.sa-east-1.amazonaws.com/public/" + userId + ".jpg"
-        );
-
         const imageEnviada = document.getElementById("enviada");
         imageEnviada.setAttribute("src", URL.createObjectURL(file));
 
-        const apiUrl = "http://ec2-18-228-199-45.sa-east-1.compute.amazonaws.com:5000/photos";
+        const apiUrl = "http://192.168.1.34:5000/photos";
         const formData = new FormData();
         formData.append("file", file);
 
-        const requestUrl = `${apiUrl}?userId=${encodeURIComponent(userId)}`;
+        const requestUrl = `${apiUrl}`;
 
         fetch(requestUrl, {
           method: "POST",
@@ -75,60 +63,15 @@
         })
           .then((response) => response.json())
           .then((data) => {
-            if (data.error) {
-              document.getElementById("result-text").textContent = "Error: " + data.error;
+            if (data.matricula) {
+              document.getElementById("result-text").textContent = data.message + " " + data.matricula;
+              const imageDb = document.getElementById("database");
+              imageDb.setAttribute(
+                "src",
+                "https://photos173431-staging.s3.sa-east-1.amazonaws.com/public/" + data.matricula + ".jpg"
+              );
             } else {
-              const similarity = data.Similarity || 0;
-              document.getElementById("result-text").textContent = "Similarity: " + similarity.toFixed(2) + "%";
-            }
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-            document.getElementById("result-text").textContent = "An error occurred.";
-          });
-      }
-
-      function uploadImage() {
-        const fileInput = document.getElementById("file");
-        const file = fileInput.files[0];
-
-        if (!file) {
-          alert("Please select an image file.");
-          return;
-        }
-
-        if (!userIdInput.value.trim()) {
-          alert("Please enter a user ID.");
-          return;
-        }
-
-        const userId = userIdInput.value.trim();
-        const imageDb = document.getElementById("database");
-        imageDb.setAttribute(
-          "src",
-          "https://photos173431-staging.s3.sa-east-1.amazonaws.com/public/" + userId + ".jpg"
-        );
-
-        const imageEnviada = document.getElementById("enviada");
-        imageEnviada.setAttribute("src", URL.createObjectURL(file));
-
-        const apiUrl = "https://b6umubuqa0.execute-api.sa-east-1.amazonaws.com/prod/photos";
-        const formData = new FormData();
-        formData.append("file", file);
-
-        const requestUrl = `${apiUrl}?userId=${encodeURIComponent(userId)}`;
-
-        fetch(requestUrl, {
-          method: "POST",
-          body: formData,
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            if (data.error) {
-              document.getElementById("result-text").textContent = "Error: " + data.error;
-            } else {
-              const similarity = data.Similarity || 0;
-              document.getElementById("result-text").textContent = "Similarity: " + similarity.toFixed(2) + "%";
+              document.getElementById("result-text").textContent = data.message;
             }
           })
           .catch((error) => {
@@ -147,22 +90,12 @@
     <div class="container">
       <h1>ClassCheck Detecção Facial</h1>
       <div class="form-group">
+        <label>Tirar foto agora:</label>
         <div class="divVideo"></div>
-        <div class="row-label">
-          <label for="userId">Matricula:</label>
-          <select id="userId">
-            <option value="123">123</option>
-            <option value="321">321</option>
-            <option value="456">456</option>
-            <option value="654">654</option>
-            <option value="789">789</option>
-          </select>
-        </div>
       </div>
       <div class="form-group row">
         <div class="button-group">
           <button onclick="captureScreenshot()">Capturar Screenshot</button>
-          <button onclick="uploadImage()">Upload Imagem</button>
         </div>
       </div>
       <div class="row">
@@ -177,8 +110,7 @@
         </div>
       </div>
       <div class="result">
-        <h2>Result:</h2>
-        <p id="result-text"></p>
+        <h2 id="result-text"></h2>
       </div>
     </div>
 
@@ -249,7 +181,7 @@
       .result {
         margin-top: 20px;
       }
-      .result h2 {
+      .result-text {
         text-align: center;
         color: #333;
       }
