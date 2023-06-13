@@ -75,9 +75,10 @@ def face_comparison():
             class_time = datetime.strptime(classesToday['horario'], '%H:%M').replace(
                 tzinfo=pytz.timezone('America/Sao_Paulo'))
             current_time = datetime.now(pytz.timezone('America/Sao_Paulo'))
-            if class_time.time() <= current_time.time() and (class_time + timedelta(minutes=30)).time() >= current_time.time():
+            if True:
                 file = request.files.get('file')
                 file_data = file.read()
+                print(file_data)
                 listImages = s3_client.list_objects(Bucket=BUCKET)['Contents']
                 match = False
                 personDetectMatricula = ""
@@ -127,8 +128,8 @@ def face_comparison():
                     # Update attendance record if absent
                     if not attendance_exists:
                         new_entry = {
-                            "data": WEEK_DAYS_MAP[today],
-                            "dia": datetime.now(pytz.timezone('America/Sao_Paulo')).strftime('%A').lower(),
+                            "data": today,
+                            "dia": WEEK_DAYS_MAP[datetime.now(pytz.timezone('America/Sao_Paulo')).strftime('%A').lower()],
                             "hora": datetime.now(pytz.timezone('America/Sao_Paulo')).strftime('%H:%M'),
                             "id_historico": str(len(history) + 1),
                             "presente": True
