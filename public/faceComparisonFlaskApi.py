@@ -75,10 +75,9 @@ def face_comparison():
             class_time = datetime.strptime(classesToday['horario'], '%H:%M').replace(
                 tzinfo=pytz.timezone('America/Sao_Paulo'))
             current_time = datetime.now(pytz.timezone('America/Sao_Paulo'))
-            if True:
+            if class_time.time() <= current_time.time() and (class_time + timedelta(minutes=10)).time() >= current_time.time():
                 file = request.files.get('file')
                 file_data = file.read()
-                print(file_data)
                 listImages = s3_client.list_objects(Bucket=BUCKET)['Contents']
                 match = False
                 personDetectMatricula = ""
